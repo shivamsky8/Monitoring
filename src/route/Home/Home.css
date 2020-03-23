@@ -1,6 +1,7 @@
 .home-wrapper {
   padding: 16px;
 }
+
 .cases-section {
   display: grid;
   grid-template-columns: auto auto auto;
@@ -19,7 +20,8 @@
 .name-section span {
   font-size: 36px;
   /* background-color: #f3f3f3; */
-  padding: 0 16px;
+  /* padding: 0 16px; */
+  padding-bottom: 16px;
   font-weight: 800;
   border-radius: 5px;
 }
@@ -63,3 +65,28 @@
     transform: rotate(360deg);
   }
 }
+
+/* Small Devices, Tablets */
+/* @media only screen and (min-width: 768px) {
+  .cases-section {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+  }
+} */
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+  .cases-section {
+    grid-template-columns: auto;
+  }
+  .name-section {
+    flex-direction: column;
+  }
+  .name-section .home-select {
+    width: 100%;
+  }
+}
+
+/* Medium Devices, Desktops */
+/* @media only screen and (min-width: 992px) {
+} */

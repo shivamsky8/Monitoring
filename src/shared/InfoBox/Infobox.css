@@ -2,7 +2,7 @@
   -webkit-box-shadow: 5px 5px 15px 5px #f3f3f3;
   box-shadow: 5px 5px 15px 5px #f3f3f3;
   height: 250px;
-  width: 400px;
+  width: 92%;
   margin-top: 20px;
   border: 1px solid #f6f6f6;
 }
@@ -31,4 +31,10 @@
   color: red;
   font-weight: 800;
   font-size: 48px;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+  .infobox-wrapper {
+    width: 100%;
+  }
 }
