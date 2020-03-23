@@ -1,0 +1,9 @@
+.strip-wrapper {
+  background-color: #f3f3f3;
+  height: 48px;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 16px;
+  font-weight: 700;
+  align-items: center;
+}

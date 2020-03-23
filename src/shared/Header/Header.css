@@ -1,0 +1,18 @@
+.header-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: rgb(0, 141, 204);
+  height: 60px;
+  font-weight: 800;
+  user-select: none;
+  align-items: center;
+  z-index: 99;
+  font-size: 24px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #dbd9d9;
+}
+.header-span {
+  padding-left: 16px;
+  padding-right: 16px;
+}
