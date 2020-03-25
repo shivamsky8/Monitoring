@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import Strip from "../../shared/Strip/Strip";
 import InfoBox from "../../shared/InfoBox/Infobox";
 import Select from "react-select";
@@ -22,19 +21,11 @@ export default class PersonList extends React.Component {
   }
 
   getAffectedCountry = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/affected.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
+    fetch("http://localhost:8000/rest/v1/affected-country")
+      .then(res => res.json())
+      .then(data => {
         const affectedCountries = [];
-        response.data.affected_countries.forEach(element => {
+        data.affected_countries.forEach(element => {
           affectedCountries.push({ value: element, label: element });
         });
         affectedCountries.push({ value: "World Wide", label: "World Wide" });
@@ -46,48 +37,26 @@ export default class PersonList extends React.Component {
   };
 
   getWorldWide = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
-        this.setState({ total: response.data, isLoading: false });
+    fetch("http://localhost:8000/rest/v1/get")
+      .then(res => res.json())
+      .then(data => {
+        console.log("PersonList -> getWorldWide -> data", data);
+        this.setState({ total: data, isLoading: false });
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(err => console.log(err));
   };
 
   getCountryWise = countryName => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      },
-      params: {
-        country: countryName
-      }
-    })
-      .then(response => {
-        console.log(response);
+    fetch(`http://localhost:8000/rest/v1/country-wise?country=${countryName}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log("PersonList -> getWorldWide -> data", data);
         this.setState({
-          total: response.data.latest_stat_by_country[0],
+          total: data.latest_stat_by_country[0],
           isLoading: false
         });
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(err => console.log(err));
   };
 
   handleChange = selectedOption => {
