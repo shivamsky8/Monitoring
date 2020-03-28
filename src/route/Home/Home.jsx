@@ -1,9 +1,10 @@
 import React from "react";
 import axios from "axios";
 import Strip from "../../shared/Strip/Strip";
-import InfoBox from "../../shared/InfoBox/Infobox";
-import Select from "react-select";
-import PieChart from "../../shared/PieChart/PieChart";
+import Header from "../../shared/Header/Header";
+import SideNav from "../../shared/Sidenav/Sidenav";
+import Statistics from "./Statistics/Statistics";
+import MapView from "./MapView/MapView";
 import "./Home.css";
 
 export default class PersonList extends React.Component {
@@ -11,7 +12,9 @@ export default class PersonList extends React.Component {
     total: [],
     affectedCountries: [],
     selectedCountry: "World Wide",
-    isLoading: false
+    isLoading: false,
+    isNavOpen: false,
+    selectedMenu: 1
   };
 
   componentDidMount() {
@@ -99,59 +102,82 @@ export default class PersonList extends React.Component {
     }
   };
 
+  navStatus = () => {
+    this.setState({ isNavOpen: !this.state.isNavOpen });
+  };
+
+  closeNav = () => {
+    this.setState({ isNavOpen: false });
+  };
+
+  selectedItem = item => {
+    this.closeNav();
+    this.setState({ selectedMenu: item.id });
+  };
+
+  renderComponent = () => {
+    const {
+      total,
+      affectedCountries,
+      selectedCountry,
+      isLoading,
+      selectedMenu
+    } = this.state;
+    if (selectedMenu.name === 1) {
+      return (
+        <Statistics
+          total={total}
+          isLoading={isLoading}
+          affectedCountries={affectedCountries}
+          selectedCountry={selectedCountry}
+          handleChange={this.handleChange}
+        />
+      );
+    }
+  };
+
   render() {
-    const { total, affectedCountries, selectedCountry, isLoading } = this.state;
-    const all = total.total_cases
-      ? parseInt(total.total_cases.replace(",", ""))
-      : 0;
-    const death = total.total_deaths
-      ? parseInt(total.total_deaths.replace(",", ""))
-      : 0;
-    const recover = total.total_recovered
-      ? parseInt(total.total_recovered.replace(",", ""))
-      : 0;
-    const active = all - recover - death;
-    const newCase = total.new_cases
-      ? parseInt(total.new_cases.replace(",", ""))
-      : 0;
-    const newDeath = total.new_deaths
-      ? parseInt(total.new_deaths.replace(",", ""))
-      : 0;
+    const {
+      isNavOpen,
+      total,
+      affectedCountries,
+      selectedCountry,
+      isLoading,
+      selectedMenu
+    } = this.state;
     return (
-      <div className="home-wrapper">
-        <div>
-          <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
-        </div>
-        <div className="name-section">
-          <span>{selectedCountry}</span>
-          <div className="home-select">
-            <Select
-              onChange={this.handleChange}
-              options={affectedCountries}
-              placeholder={selectedCountry}
+      <div
+        className={`main-section ${isNavOpen ? "main-section-with-nav" : ""}`}
+      >
+        <Header navStatus={this.navStatus} />
+        <SideNav
+          isNavOpen={isNavOpen}
+          closeSideNav={this.closeNav}
+          selectedItem={this.selectedItem}
+        />
+        <div
+          className={`home-wrapper ${isNavOpen ? "home-wrapper-opacity" : ""}`}
+          onClick={this.closeNav}
+        >
+          {/* <div>
+            <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
+          </div> */}
+
+          {selectedMenu === 1 && (
+            <Statistics
+              total={total}
+              isLoading={isLoading}
+              affectedCountries={affectedCountries}
+              selectedCountry={selectedCountry}
+              handleChange={this.handleChange}
             />
-          </div>
+          )}
+          {selectedMenu === 2 && <MapView />}
+          {selectedMenu === 3 && <span>Symptom Checker</span>}
+          {selectedMenu === 4 && <span>FAQ</span>}
+          {selectedMenu === 5 && <span>Helpline</span>}
+          {selectedMenu === 6 && <span>About</span>}
         </div>
-        {isLoading ? (
-          <div id="loader"></div>
-        ) : (
-          <>
-            <div className="cases-section">
-              <InfoBox
-                header="Total Cases"
-                count={total.total_cases}
-                newCase={newCase}
-              />
-              <InfoBox
-                header="Death"
-                count={total.total_deaths}
-                newCase={newDeath}
-              />
-              <InfoBox header="Recovered" count={total.total_recovered} />
-            </div>
-            <PieChart active={active} death={death} recover={recover} />
-          </>
-        )}
       </div>
     );
   }

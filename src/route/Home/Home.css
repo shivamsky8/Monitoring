@@ -1,5 +1,17 @@
 .home-wrapper {
   padding: 16px;
+  overflow: hidden;
+}
+
+.main-section {
+  width: 100%;
+}
+.main-section-with-nav {
+  padding-left: 18%;
+  width: 82%;
+}
+.home-wrapper-opacity {
+  opacity: 0.4;
 }
 
 .cases-section {

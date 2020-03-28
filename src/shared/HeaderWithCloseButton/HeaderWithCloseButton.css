@@ -1,0 +1,14 @@
+.header-close-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.header-span-close {
+  color: rgb(0, 141, 204);
+  font-size: 24px;
+}
+.fa-icon-close {
+  font-size: 32px;
+}
