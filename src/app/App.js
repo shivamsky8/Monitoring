@@ -12,6 +12,7 @@ function App() {
   return(
     <Provider store={store}>
     <Routes />
+    <Counter/>
     </Provider>
   )
 }
