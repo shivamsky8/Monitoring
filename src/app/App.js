@@ -1,18 +1,17 @@
 import React from "react";
 import {Provider} from 'react-redux';
-import {createStore} from 'redux'
+import {createStore , applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import rootReducer from '../redux/reducer'
 import Routes from "../route/route";
-import Counter from '../Counter'
 import "./App.css";
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer,applyMiddleware(thunk))
 
 function App() {
   return(
     <Provider store={store}>
     <Routes />
-    <Counter/>
     </Provider>
   )
 }
