@@ -58,7 +58,7 @@ export const fetchWorldWideError = e => ({
 
 export const fetchWorldWide = () => async dispatch => {
   try {
-    const url = "/worldstat.php";
+    const url = "/world_total_stat.php";
     const response = await httpClient.get(url);
     dispatch(fetchWorldWideSuccess(response.data));
   } catch (e) {
@@ -78,7 +78,7 @@ export const fetchCountryWiseError = e => ({
 
 export const fetchCountryWise = countryName => async dispatch => {
   try {
-    const url = `/latest_stat_by_country.php?country=${countryName}`;
+    const url = `/latest_stat_by_country_name.php?country=${countryName}`;
     const response = await httpClient.get(url);
     dispatch(fetchCountryWiseSuccess(response.data.latest_stat_by_country[0]));
   } catch (e) {
