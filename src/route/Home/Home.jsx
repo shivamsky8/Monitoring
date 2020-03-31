@@ -171,9 +171,4 @@ const mapDispatchToProps = {
   stopLoading
 };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Home)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
