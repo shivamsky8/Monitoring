@@ -8,6 +8,9 @@ export const OPEN_MENU = "[UI] OPEN_MENU";
 export const CLOSE_MENU = "[UI] CLOSE_MENU";
 export const SELECTED_MENU_ITEM = "[UI] SELECTED_MENU_ITEM";
 
+export const SHOW_LOADER = "[UI] SHOW_LOADER";
+export const HIDE_LOADER = "[UI] HIDE_LOADER";
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -35,6 +38,29 @@ export const SelectedMenuItem = e => ({
   payload: e
 });
 
+export const loading = bool =>
+({
+  type: SHOW_LOADER,
+  data: bool
+})
+//  {
+// console.log("bool", bool)
+//   return bool
+//     ? {
+//         type: "SHOW_LOADER",
+//         data: bool
+//       }
+//     : {
+//         type: "HIDE_LOADER",
+//         data: bool
+//       };
+// };
+
+export const stopLoading = bool => ({
+  type: HIDE_LOADER,
+  data: bool
+})
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -43,7 +69,8 @@ const initialState = {
   menu: {
     isOpen: false,
     selectedMenu: 1
-  }
+  },
+  loader: false
 };
 
 export function uiReducer(state = initialState, action) {
@@ -75,6 +102,20 @@ export function uiReducer(state = initialState, action) {
           ...state.menu,
           selectedMenu: action.payload
         }
+      };
+    }
+
+    case SHOW_LOADER: {
+      return {
+        ...state,
+        loader: action.data
+      };
+    }
+
+    case HIDE_LOADER: {
+      return {
+        ...state,
+        loader: action.data
       };
     }
 

@@ -2,7 +2,13 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { openMenu, closeMenu, SelectedMenuItem } from "../../Module/ui.reducer";
+import {
+  openMenu,
+  closeMenu,
+  SelectedMenuItem,
+  loading,
+  stopLoading
+} from "../../Module/ui.reducer";
 import {
   fetchAffectedCountries,
   fetchWorldWide,
@@ -12,6 +18,8 @@ import Strip from "../../shared/Strip/Strip";
 import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
 import Statistics from "./Statistics/Statistics";
+import httpClient from "../../utils/http-client";
+import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
 import "./Home.css";
 
@@ -19,6 +27,30 @@ class Home extends React.Component {
   state = {
     selectedCountry: "World Wide"
   };
+
+  componentWillMount() {
+    const self = this;
+    httpClient.interceptors.request.use(
+      function(config) {
+        self.props.loading(true);
+        return config;
+      },
+      function(error) {
+        console.log("Home -> componentWillMount -> error", error);
+        return Promise.reject(error);
+      }
+    );
+
+    httpClient.interceptors.response.use(
+      function(response) {
+        self.props.stopLoading(false);
+        return response;
+      },
+      function(error) {
+        return Promise.reject(error);
+      }
+    );
+  }
 
   componentDidMount() {
     this.getWorldWide();
@@ -66,7 +98,13 @@ class Home extends React.Component {
 
   render() {
     const { selectedCountry } = this.state;
-    const { isMenuOpen, selectedMenu, affectedCountries, total } = this.props;
+    const {
+      isMenuOpen,
+      selectedMenu,
+      affectedCountries,
+      total,
+      loader
+    } = this.props;
     return (
       <div
         className={`main-section ${isMenuOpen ? "main-section-with-nav" : ""}`}
@@ -78,27 +116,36 @@ class Home extends React.Component {
           closeSideNav={this.closeNav}
           selectedItem={this.selectedItem}
         />
-        <div
-          className={`home-wrapper ${isMenuOpen ? "home-wrapper-opacity" : ""}`}
-          onClick={this.closeNav}
-        >
-          {/* <div>
+
+        <div>
+          {loader ? (
+            <Loader />
+          ) : (
+            <div
+              className={`home-wrapper ${
+                isMenuOpen ? "home-wrapper-opacity" : ""
+              }`}
+              onClick={this.closeNav}
+            >
+              {/* <div>
             <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
           </div> */}
 
-          {selectedMenu === 1 && (
-            <Statistics
-              total={total}
-              affectedCountries={affectedCountries}
-              selectedCountry={selectedCountry}
-              handleChange={this.handleChange}
-            />
+              {selectedMenu === 1 && (
+                <Statistics
+                  total={total}
+                  affectedCountries={affectedCountries}
+                  selectedCountry={selectedCountry}
+                  handleChange={this.handleChange}
+                />
+              )}
+              {selectedMenu === 2 && <MapView />}
+              {selectedMenu === 3 && <span>Symptom Checker</span>}
+              {selectedMenu === 4 && <span>FAQ</span>}
+              {selectedMenu === 5 && <span>Helpline</span>}
+              {selectedMenu === 6 && <span>About</span>}
+            </div>
           )}
-          {selectedMenu === 2 && <MapView />}
-          {selectedMenu === 3 && <span>Symptom Checker</span>}
-          {selectedMenu === 4 && <span>FAQ</span>}
-          {selectedMenu === 5 && <span>Helpline</span>}
-          {selectedMenu === 6 && <span>About</span>}
         </div>
       </div>
     );
@@ -109,7 +156,8 @@ const mapStateToProps = state => ({
   isMenuOpen: state.ui.menu.isOpen,
   selectedMenu: state.ui.menu.selectedMenu,
   affectedCountries: state.home.affectedCountries,
-  total: state.home.worldWide
+  total: state.home.worldWide,
+  loader: state.ui.loader
 });
 
 const mapDispatchToProps = {
@@ -118,7 +166,14 @@ const mapDispatchToProps = {
   SelectedMenuItem,
   fetchAffectedCountries,
   fetchWorldWide,
-  fetchCountryWise
+  fetchCountryWise,
+  loading,
+  stopLoading
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Home)
+);
