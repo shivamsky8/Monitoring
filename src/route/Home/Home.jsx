@@ -49,7 +49,7 @@ export default class PersonList extends React.Component {
     axios({
       method: "GET",
       url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
+        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/world_total_stat.php",
       headers: {
         "content-type": "application/octet-stream",
         "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
