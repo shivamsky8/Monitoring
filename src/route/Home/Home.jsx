@@ -1,5 +1,13 @@
 import React from "react";
 import axios from "axios";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { openMenu, closeMenu, SelectedMenuItem } from "../../Module/ui.reducer";
+import {
+  fetchAffectedCountries,
+  fetchWorldWide,
+  fetchCountryWise
+} from "./homeReducer";
 import Strip from "../../shared/Strip/Strip";
 import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
@@ -7,94 +15,29 @@ import Statistics from "./Statistics/Statistics";
 import MapView from "./MapView/MapView";
 import "./Home.css";
 
-export default class PersonList extends React.Component {
+class Home extends React.Component {
   state = {
-    total: [],
-    affectedCountries: [],
-    selectedCountry: "World Wide",
-    isLoading: false,
-    isNavOpen: false,
-    selectedMenu: 1
+    selectedCountry: "World Wide"
   };
 
   componentDidMount() {
     this.getWorldWide();
+    this.props.fetchWorldWide();
 
     //affected countries
-    this.getAffectedCountry();
+    this.props.fetchAffectedCountries();
   }
 
-  getAffectedCountry = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/affected.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
-        const affectedCountries = [];
-        response.data.affected_countries.forEach(element => {
-          affectedCountries.push({ value: element, label: element });
-        });
-        affectedCountries.push({ value: "World Wide", label: "World Wide" });
-        this.setState({ affectedCountries });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
   getWorldWide = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
-        this.setState({ total: response.data, isLoading: false });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.fetchWorldWide();
   };
 
   getCountryWise = countryName => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      },
-      params: {
-        country: countryName
-      }
-    })
-      .then(response => {
-        console.log(response);
-        this.setState({
-          total: response.data.latest_stat_by_country[0],
-          isLoading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.fetchCountryWise(countryName);
   };
 
   handleChange = selectedOption => {
-    this.setState({ isLoading: true, selectedCountry: selectedOption.value });
+    this.setState({ selectedCountry: selectedOption.value });
     if (selectedOption.value === "World Wide") {
       this.getWorldWide();
     } else {
@@ -103,60 +46,40 @@ export default class PersonList extends React.Component {
   };
 
   navStatus = () => {
-    this.setState({ isNavOpen: !this.state.isNavOpen });
+    const { isMenuOpen } = this.props;
+    if (isMenuOpen) {
+      this.props.closeMenu();
+    } else {
+      this.props.openMenu();
+    }
   };
 
   closeNav = () => {
-    this.setState({ isNavOpen: false });
+    this.props.closeMenu();
   };
 
   selectedItem = item => {
     this.closeNav();
-    this.setState({ selectedMenu: item.id });
-  };
-
-  renderComponent = () => {
-    const {
-      total,
-      affectedCountries,
-      selectedCountry,
-      isLoading,
-      selectedMenu
-    } = this.state;
-    if (selectedMenu.name === 1) {
-      return (
-        <Statistics
-          total={total}
-          isLoading={isLoading}
-          affectedCountries={affectedCountries}
-          selectedCountry={selectedCountry}
-          handleChange={this.handleChange}
-        />
-      );
-    }
+    // this.setState({ selectedMenu: item.id });
+    this.props.SelectedMenuItem(item.id);
   };
 
   render() {
-    const {
-      isNavOpen,
-      total,
-      affectedCountries,
-      selectedCountry,
-      isLoading,
-      selectedMenu
-    } = this.state;
+    const { selectedCountry } = this.state;
+    const { isMenuOpen, selectedMenu, affectedCountries, total } = this.props;
     return (
       <div
-        className={`main-section ${isNavOpen ? "main-section-with-nav" : ""}`}
+        className={`main-section ${isMenuOpen ? "main-section-with-nav" : ""}`}
       >
         <Header navStatus={this.navStatus} />
+
         <SideNav
-          isNavOpen={isNavOpen}
+          isNavOpen={isMenuOpen}
           closeSideNav={this.closeNav}
           selectedItem={this.selectedItem}
         />
         <div
-          className={`home-wrapper ${isNavOpen ? "home-wrapper-opacity" : ""}`}
+          className={`home-wrapper ${isMenuOpen ? "home-wrapper-opacity" : ""}`}
           onClick={this.closeNav}
         >
           {/* <div>
@@ -166,7 +89,6 @@ export default class PersonList extends React.Component {
           {selectedMenu === 1 && (
             <Statistics
               total={total}
-              isLoading={isLoading}
               affectedCountries={affectedCountries}
               selectedCountry={selectedCountry}
               handleChange={this.handleChange}
@@ -182,3 +104,21 @@ export default class PersonList extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isMenuOpen: state.ui.menu.isOpen,
+  selectedMenu: state.ui.menu.selectedMenu,
+  affectedCountries: state.home.affectedCountries,
+  total: state.home.worldWide
+});
+
+const mapDispatchToProps = {
+  openMenu,
+  closeMenu,
+  SelectedMenuItem,
+  fetchAffectedCountries,
+  fetchWorldWide,
+  fetchCountryWise
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

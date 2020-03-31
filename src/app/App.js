@@ -1,19 +1,19 @@
 import React from "react";
-import {Provider} from 'react-redux';
-import {createStore , applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from '../redux/reducer'
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
 import Routes from "../route/route";
+import { store } from "../Store";
+import { history } from "../utils";
 import "./App.css";
 
-const store = createStore(rootReducer,applyMiddleware(thunk))
-
 function App() {
-  return(
+  return (
     <Provider store={store}>
-    <Routes />
+      <ConnectedRouter history={history}>
+        <Routes />
+      </ConnectedRouter>
     </Provider>
-  )
+  );
 }
 
 export default App;

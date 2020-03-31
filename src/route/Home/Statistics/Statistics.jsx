@@ -11,7 +11,7 @@ export default class Statistics extends React.Component {
     this.props.handleChange(selectedOption);
   };
   render() {
-    const { total, isLoading, selectedCountry, affectedCountries } = this.props;
+    const { total, selectedCountry, affectedCountries } = this.props;
 
     const all = total.total_cases
       ? parseInt(total.total_cases.replace(",", ""))
@@ -41,26 +41,20 @@ export default class Statistics extends React.Component {
             />
           </div>
         </div>
-        {isLoading ? (
-          <div id="loader"></div>
-        ) : (
-          <>
-            <div className="cases-section">
-              <InfoBox
-                header="Total Cases"
-                count={total.total_cases}
-                newCase={newCase}
-              />
-              <InfoBox
-                header="Death"
-                count={total.total_deaths}
-                newCase={newDeath}
-              />
-              <InfoBox header="Recovered" count={total.total_recovered} />
-            </div>
-            <PieChart active={active} death={death} recover={recover} />
-          </>
-        )}
+        <div className="cases-section">
+          <InfoBox
+            header="Total Cases"
+            count={total.total_cases}
+            newCase={newCase}
+          />
+          <InfoBox
+            header="Death"
+            count={total.total_deaths}
+            newCase={newDeath}
+          />
+          <InfoBox header="Recovered" count={total.total_recovered} />
+        </div>
+        <PieChart active={active} death={death} recover={recover} />
       </>
     );
   }
