@@ -1,6 +1,7 @@
 .home-wrapper {
   padding: 16px;
   overflow: hidden;
+  /* height: 80vh; */
 }
 
 .main-section {
@@ -30,7 +31,7 @@
   justify-content: space-between;
 }
 .name-section span {
-  font-size: 36px;
+  font-size: 26px;
   /* background-color: #f3f3f3; */
   /* padding: 0 16px; */
   padding-bottom: 16px;

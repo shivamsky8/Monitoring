@@ -21,6 +21,7 @@ import Statistics from "./Statistics/Statistics";
 import httpClient from "../../utils/http-client";
 import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
+import SymptomCheckar from "./SymptomCheckar/SymptomCheckar"
 import "./Home.css";
 
 class Home extends React.Component {
@@ -140,7 +141,7 @@ class Home extends React.Component {
                 />
               )}
               {selectedMenu === 2 && <MapView />}
-              {selectedMenu === 3 && <span>Symptom Checker</span>}
+              {selectedMenu === 3 && <SymptomCheckar/>}
               {selectedMenu === 4 && <span>FAQ</span>}
               {selectedMenu === 5 && <span>Helpline</span>}
               {selectedMenu === 6 && <span>About</span>}

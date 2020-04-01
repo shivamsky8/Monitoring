@@ -68,7 +68,7 @@ export const stopLoading = bool => ({
 const initialState = {
   menu: {
     isOpen: false,
-    selectedMenu: 1
+    selectedMenu: 3
   },
   loader: false
 };

@@ -1,0 +1,28 @@
+.checker-container {
+  border: 1px solid gray;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  /* margin: auto; */
+  /* width: 60%;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+    
+  margin: auto */
+  position: absolute;
+  top: 200px;
+  left: 100px;
+  margin: auto;
+}
+.quest-card {
+}
+
+.action-container {
+  /* border: 1px solid red; */
+  border-top: 1px solid rgb(0, 141, 204);
+  padding: 2px;
+  /* position: absolute; */
+  display: flex;
+  justify-content: space-between;
+}
