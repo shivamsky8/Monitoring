@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
@@ -21,6 +20,7 @@ import Statistics from "./Statistics/Statistics";
 import httpClient from "../../utils/http-client";
 import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
+import Faq from "./Faq/Faq";
 import "./Home.css";
 
 class Home extends React.Component {
@@ -28,7 +28,7 @@ class Home extends React.Component {
     selectedCountry: "World Wide"
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const self = this;
     httpClient.interceptors.request.use(
       function(config) {
@@ -128,8 +128,8 @@ class Home extends React.Component {
               onClick={this.closeNav}
             >
               {/* <div>
-            <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
-          </div> */}
+                <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
+              </div> */}
 
               {selectedMenu === 1 && (
                 <Statistics
@@ -141,7 +141,7 @@ class Home extends React.Component {
               )}
               {selectedMenu === 2 && <MapView />}
               {selectedMenu === 3 && <span>Symptom Checker</span>}
-              {selectedMenu === 4 && <span>FAQ</span>}
+              {selectedMenu === 4 && <Faq />}
               {selectedMenu === 5 && <span>Helpline</span>}
               {selectedMenu === 6 && <span>About</span>}
             </div>

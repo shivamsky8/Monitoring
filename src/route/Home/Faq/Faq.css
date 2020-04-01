@@ -1,0 +1,18 @@
+.faq-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.accordion-section {
+  width: 80%;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+  .faq-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .accordion-section {
+    width: 100%;
+  }
+}
