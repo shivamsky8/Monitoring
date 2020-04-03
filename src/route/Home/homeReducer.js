@@ -16,6 +16,12 @@ export const FETCH_COUNTRY_WISE = "[HOME] FETCH_COUNTRY_WISE";
 export const FETCH_COUNTRY_WISE_SUCCESS = "[HOME] FETCH_COUNTRY_WISE_SUCCESS";
 export const FETCH_COUNTRY_WISE_ERROR = "[HOME] FETCH_COUNTRY_WISE_ERROR";
 
+export const FETCH_COUNTRY_WISE_STATS = "[HOME] FETCH_COUNTRY_WISE_STATS";
+export const FETCH_COUNTRY_WISE_STATS_SUCCESS =
+  "[HOME] FETCH_COUNTRY_WISE_STATS_SUCCESS";
+export const FETCH_COUNTRY_WISE_STATS_ERROR =
+  "[HOME] FETCH_COUNTRY_WISE_STATS_ERROR";
+
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -85,13 +91,63 @@ export const fetchCountryWise = countryName => async dispatch => {
   }
 };
 
+export const fetchCountryWiseStatsSuccess = countyData => ({
+  type: FETCH_COUNTRY_WISE_STATS_SUCCESS,
+  payload: countyData
+});
+
+export const fetchCountryWiseStatsError = e => ({
+  type: FETCH_COUNTRY_WISE_STATS_ERROR,
+  payload: e
+});
+
+export const fetchCountryWiseStats = countryName => async dispatch => {
+  try {
+    const url = `/cases_by_particular_country.php?country=${countryName}`;
+    const response = await httpClient.get(url);
+    const data = response.data.stat_by_country.filter(
+      (thing, index, self) =>
+        index ===
+        self.findIndex(
+          t =>
+            t.record_date.substr(0, t.record_date.indexOf(" ")) ===
+            thing.record_date.substr(0, thing.record_date.indexOf(" "))
+        )
+    );
+
+    const reqData = data.splice(data.length - 8, data.length);
+    console.table(reqData);
+    let date = [];
+    let death = [];
+    let newCase = [];
+    reqData.forEach(elem => {
+      date.push(elem.record_date.substr(0, elem.record_date.indexOf(" ")));
+      death.push(
+        parseInt(
+          elem.new_deaths.length > 0 ? elem.new_deaths.replace(",", "") : 0
+        )
+      );
+      newCase.push(
+        parseInt(
+          elem.new_cases.length > 0 ? elem.new_cases.replace(",", "") : 0
+        )
+      );
+    });
+
+    dispatch(fetchCountryWiseStatsSuccess({ date, death, newCase }));
+  } catch (e) {
+    dispatch(fetchCountryWiseStatsError(e));
+  }
+};
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
 
 const initialState = {
   affectedCountries: [],
-  worldWide: {}
+  worldWide: {},
+  filteredStats: {}
 };
 
 export function homeReducer(state = initialState, action) {
@@ -112,6 +168,12 @@ export function homeReducer(state = initialState, action) {
       return {
         ...state,
         worldWide: action.payload
+      };
+    }
+    case FETCH_COUNTRY_WISE_STATS_SUCCESS: {
+      return {
+        ...state,
+        filteredStats: action.payload
       };
     }
 

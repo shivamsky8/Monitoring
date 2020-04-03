@@ -11,9 +11,10 @@ import {
 import {
   fetchAffectedCountries,
   fetchWorldWide,
-  fetchCountryWise
+  fetchCountryWise,
+  fetchCountryWiseStats
 } from "./homeReducer";
-import Strip from "../../shared/Strip/Strip";
+// import Strip from "../../shared/Strip/Strip";
 import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
 import Statistics from "./Statistics/Statistics";
@@ -22,6 +23,7 @@ import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
 import Faq from "./Faq/Faq";
 import "./Home.css";
+import Footer from "../../shared/Footer/Footer";
 
 class Home extends React.Component {
   state = {
@@ -58,6 +60,7 @@ class Home extends React.Component {
 
     //affected countries
     this.props.fetchAffectedCountries();
+    const name = "india";
   }
 
   getWorldWide = () => {
@@ -74,6 +77,7 @@ class Home extends React.Component {
       this.getWorldWide();
     } else {
       this.getCountryWise(selectedOption.value);
+      this.props.fetchCountryWiseStats(selectedOption.value);
     }
   };
 
@@ -98,13 +102,8 @@ class Home extends React.Component {
 
   render() {
     const { selectedCountry } = this.state;
-    const {
-      isMenuOpen,
-      selectedMenu,
-      affectedCountries,
-      total,
-      loader
-    } = this.props;
+    const { isMenuOpen, selectedMenu, loader } = this.props;
+
     return (
       <div
         className={`main-section ${isMenuOpen ? "main-section-with-nav" : ""}`}
@@ -133,8 +132,6 @@ class Home extends React.Component {
 
               {selectedMenu === 1 && (
                 <Statistics
-                  total={total}
-                  affectedCountries={affectedCountries}
                   selectedCountry={selectedCountry}
                   handleChange={this.handleChange}
                 />
@@ -157,7 +154,8 @@ const mapStateToProps = state => ({
   selectedMenu: state.ui.menu.selectedMenu,
   affectedCountries: state.home.affectedCountries,
   total: state.home.worldWide,
-  loader: state.ui.loader
+  loader: state.ui.loader,
+  filteredStats: state.home.filteredStats
 });
 
 const mapDispatchToProps = {
@@ -168,7 +166,8 @@ const mapDispatchToProps = {
   fetchWorldWide,
   fetchCountryWise,
   loading,
-  stopLoading
+  stopLoading,
+  fetchCountryWiseStats
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

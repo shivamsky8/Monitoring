@@ -1,17 +1,25 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import PieChart from "../../../shared/PieChart/PieChart";
 import InfoBox from "../../../shared/InfoBox/Infobox";
 import Select from "react-select";
 
 import "./Statistics.css";
+import BarChart from "../../../shared/BarChart/BarChart";
 
-export default class Statistics extends React.Component {
+class Statistics extends React.Component {
   handleChange = selectedOption => {
     this.props.handleChange(selectedOption);
   };
   render() {
-    const { total, selectedCountry, affectedCountries } = this.props;
+    const {
+      total,
+      selectedCountry,
+      affectedCountries,
+      filteredStats
+    } = this.props;
 
     const all = total.total_cases
       ? parseInt(total.total_cases.replace(",", ""))
@@ -29,6 +37,9 @@ export default class Statistics extends React.Component {
     const newDeath = total.new_deaths
       ? parseInt(total.new_deaths.replace(",", ""))
       : 0;
+
+    console.log(filteredStats);
+
     return (
       <>
         <div className="name-section">
@@ -54,8 +65,45 @@ export default class Statistics extends React.Component {
           />
           <InfoBox header="Recovered" count={total.total_recovered} />
         </div>
-        <PieChart active={active} death={death} recover={recover} />
+        <PieChart active={Math.abs(active)} death={death} recover={recover} />
+        {selectedCountry !== "World Wide" && (
+          <div className="bar-chart-section">
+            <div className="first">
+              <BarChart
+                date={filteredStats.date}
+                data={filteredStats.newCase}
+                name={"New Cases"}
+                style={400}
+              />
+            </div>
+            <div className="second">
+              <BarChart
+                date={filteredStats.date}
+                data={filteredStats.death}
+                name={"New Deaths"}
+                style={400}
+              />
+            </div>
+          </div>
+        )}
       </>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  isMenuOpen: state.ui.menu.isOpen,
+  selectedMenu: state.ui.menu.selectedMenu,
+  affectedCountries: state.home.affectedCountries,
+  total: state.home.worldWide,
+  loader: state.ui.loader,
+  filteredStats: state.home.filteredStats
+});
+
+const mapDispatchToProps = {
+  // fetchCountryWiseStats
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Statistics)
+);

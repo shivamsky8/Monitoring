@@ -60,7 +60,7 @@ export default class PieChart extends React.Component {
       <>
         <ReactEcharts
           option={this.getOption()}
-          // style={{ height: 500 }}
+          // style={{ height: 300 }}
           className="echart-style"
         />
       </>
