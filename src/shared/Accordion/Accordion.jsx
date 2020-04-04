@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./Accordion.css";
 
-export const Toggle = props => {
+export const Toggle = (props) => {
   return (
     <div className="toggable">
       <div className="toggable_heading" onClick={props.setActive}>
@@ -37,22 +37,21 @@ export class Accordion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      active: this.props.activeDefault
+      active: this.props.activeDefault,
     };
   }
 
-  setActive = i => {
-    this.setState(oldState => ({
-      active: oldState.active === i ? null : i
+  setActive = (i) => {
+    this.setState((oldState) => ({
+      active: oldState.active === i ? null : i,
     }));
   };
 
   render() {
     const children = React.Children.map(this.props.children, (child, i) => {
-      console.log(this.props.children);
       return React.cloneElement(child, {
         active: this.state.active === i,
-        setActive: () => this.setActive(i)
+        setActive: () => this.setActive(i),
       });
     });
     return <div className="accordion">{children}</div>;

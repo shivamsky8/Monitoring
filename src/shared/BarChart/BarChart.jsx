@@ -4,7 +4,7 @@ import ReactEcharts from "echarts-for-react";
 
 export default class BarChart extends React.Component {
   state = {
-    radius: "70%"
+    radius: "70%",
   };
   componentDidMount() {
     if (window.innerWidth < 480) {
@@ -17,37 +17,37 @@ export default class BarChart extends React.Component {
     tooltip: {
       trigger: "axis",
       axisPointer: {
-        type: "none"
-      }
+        type: "none",
+      },
     },
     title: {
-      text: name
+      text: name,
     },
     grid: {
       left: "3%",
       right: "4%",
       bottom: "3%",
-      containLabel: true
+      containLabel: true,
     },
     xAxis: [
       {
         type: "category",
         data: data,
         axisTick: {
-          show: false
+          show: false,
         },
         axisLabel: {
-          rotate: 30
-        }
-      }
+          rotate: 30,
+        },
+      },
     ],
     yAxis: [
       {
         type: "value",
         axisTick: {
-          show: false
-        }
-      }
+          show: false,
+        },
+      },
     ],
     series: [
       {
@@ -56,14 +56,13 @@ export default class BarChart extends React.Component {
         data: date,
         label: {
           show: true,
-          position: "top"
-        }
-      }
-    ]
+          position: "top",
+        },
+      },
+    ],
   });
   render() {
     const { data, date, name, style } = this.props;
-    console.log(data, date, "Bar chart");
 
     return (
       <>

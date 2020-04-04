@@ -26,22 +26,22 @@ export const FETCH_COUNTRY_WISE_STATS_ERROR =
 // Actions
 // ------------------------------------
 
-export const fetchAffectedCountriesSuccess = affected => ({
+export const fetchAffectedCountriesSuccess = (affected) => ({
   type: FETCH_AFFECTED_COUNTRIES_SUCCESS,
-  payload: affected
+  payload: affected,
 });
 
-export const fetchAffectedCountriesError = e => ({
+export const fetchAffectedCountriesError = (e) => ({
   type: FETCH_AFFECTED_COUNTRIES_ERROR,
-  payload: e
+  payload: e,
 });
 
-export const fetchAffectedCountries = () => async dispatch => {
+export const fetchAffectedCountries = () => async (dispatch) => {
   try {
     const url = "/affected.php";
     const response = await httpClient.get(url);
     const affectedCountries = [];
-    response.data.affected_countries.forEach(element => {
+    response.data.affected_countries.forEach((element) => {
       affectedCountries.push({ value: element, label: element });
     });
     affectedCountries.push({ value: "World Wide", label: "World Wide" });
@@ -51,17 +51,17 @@ export const fetchAffectedCountries = () => async dispatch => {
   }
 };
 
-export const fetchWorldWideSuccess = worldWide => ({
+export const fetchWorldWideSuccess = (worldWide) => ({
   type: FETCH_WORLD_WIDE_SUCCESS,
-  payload: worldWide
+  payload: worldWide,
 });
 
-export const fetchWorldWideError = e => ({
+export const fetchWorldWideError = (e) => ({
   type: FETCH_WORLD_WIDE_ERROR,
-  payload: e
+  payload: e,
 });
 
-export const fetchWorldWide = () => async dispatch => {
+export const fetchWorldWide = () => async (dispatch) => {
   try {
     const url = "/worldstat.php";
     const response = await httpClient.get(url);
@@ -71,17 +71,17 @@ export const fetchWorldWide = () => async dispatch => {
   }
 };
 
-export const fetchCountryWiseSuccess = countyData => ({
+export const fetchCountryWiseSuccess = (countyData) => ({
   type: FETCH_COUNTRY_WISE_SUCCESS,
-  payload: countyData
+  payload: countyData,
 });
 
-export const fetchCountryWiseError = e => ({
+export const fetchCountryWiseError = (e) => ({
   type: FETCH_COUNTRY_WISE_ERROR,
-  payload: e
+  payload: e,
 });
 
-export const fetchCountryWise = countryName => async dispatch => {
+export const fetchCountryWise = (countryName) => async (dispatch) => {
   try {
     const url = `/latest_stat_by_country.php?country=${countryName}`;
     const response = await httpClient.get(url);
@@ -91,17 +91,17 @@ export const fetchCountryWise = countryName => async dispatch => {
   }
 };
 
-export const fetchCountryWiseStatsSuccess = countyData => ({
+export const fetchCountryWiseStatsSuccess = (countyData) => ({
   type: FETCH_COUNTRY_WISE_STATS_SUCCESS,
-  payload: countyData
+  payload: countyData,
 });
 
-export const fetchCountryWiseStatsError = e => ({
+export const fetchCountryWiseStatsError = (e) => ({
   type: FETCH_COUNTRY_WISE_STATS_ERROR,
-  payload: e
+  payload: e,
 });
 
-export const fetchCountryWiseStats = countryName => async dispatch => {
+export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
   try {
     const url = `/cases_by_particular_country.php?country=${countryName}`;
     const response = await httpClient.get(url);
@@ -109,18 +109,17 @@ export const fetchCountryWiseStats = countryName => async dispatch => {
       (thing, index, self) =>
         index ===
         self.findIndex(
-          t =>
+          (t) =>
             t.record_date.substr(0, t.record_date.indexOf(" ")) ===
             thing.record_date.substr(0, thing.record_date.indexOf(" "))
         )
     );
 
     const reqData = data.splice(data.length - 8, data.length);
-    console.table(reqData);
     let date = [];
     let death = [];
     let newCase = [];
-    reqData.forEach(elem => {
+    reqData.forEach((elem) => {
       date.push(elem.record_date.substr(0, elem.record_date.indexOf(" ")));
       death.push(
         parseInt(
@@ -147,7 +146,7 @@ export const fetchCountryWiseStats = countryName => async dispatch => {
 const initialState = {
   affectedCountries: [],
   worldWide: {},
-  filteredStats: {}
+  filteredStats: {},
 };
 
 export function homeReducer(state = initialState, action) {
@@ -155,25 +154,25 @@ export function homeReducer(state = initialState, action) {
     case FETCH_AFFECTED_COUNTRIES_SUCCESS: {
       return {
         ...state,
-        affectedCountries: [...action.payload]
+        affectedCountries: [...action.payload],
       };
     }
     case FETCH_WORLD_WIDE_SUCCESS: {
       return {
         ...state,
-        worldWide: action.payload
+        worldWide: action.payload,
       };
     }
     case FETCH_COUNTRY_WISE_SUCCESS: {
       return {
         ...state,
-        worldWide: action.payload
+        worldWide: action.payload,
       };
     }
     case FETCH_COUNTRY_WISE_STATS_SUCCESS: {
       return {
         ...state,
-        filteredStats: action.payload
+        filteredStats: action.payload,
       };
     }
 

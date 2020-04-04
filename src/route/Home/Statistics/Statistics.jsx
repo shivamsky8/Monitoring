@@ -10,7 +10,7 @@ import "./Statistics.css";
 import BarChart from "../../../shared/BarChart/BarChart";
 
 class Statistics extends React.Component {
-  handleChange = selectedOption => {
+  handleChange = (selectedOption) => {
     this.props.handleChange(selectedOption);
   };
   render() {
@@ -18,7 +18,7 @@ class Statistics extends React.Component {
       total,
       selectedCountry,
       affectedCountries,
-      filteredStats
+      filteredStats,
     } = this.props;
 
     const all = total.total_cases
@@ -37,8 +37,6 @@ class Statistics extends React.Component {
     const newDeath = total.new_deaths
       ? parseInt(total.new_deaths.replace(",", ""))
       : 0;
-
-    console.log(filteredStats);
 
     return (
       <>
@@ -91,13 +89,13 @@ class Statistics extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isMenuOpen: state.ui.menu.isOpen,
   selectedMenu: state.ui.menu.selectedMenu,
   affectedCountries: state.home.affectedCountries,
   total: state.home.worldWide,
   loader: state.ui.loader,
-  filteredStats: state.home.filteredStats
+  filteredStats: state.home.filteredStats,
 });
 
 const mapDispatchToProps = {
