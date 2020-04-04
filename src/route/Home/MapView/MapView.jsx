@@ -6,9 +6,9 @@ import "./MapView.css";
 export default class MapView extends React.Component {
   render() {
     return (
-      <>
+      <div className="map-section">
         <MapChart />
-      </>
+      </div>
     );
   }
 }

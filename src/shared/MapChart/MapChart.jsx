@@ -4393,11 +4393,7 @@ export default class MapChart extends React.Component {
   state = {
     radius: "70%"
   };
-  componentDidMount() {
-    if (window.innerWidth < 480) {
-      this.setState({ radius: "40%" });
-    }
-  }
+  componentDidMount() {}
 
   makeMapData = rawData => {
     var mapData = [];
@@ -4497,7 +4493,7 @@ export default class MapChart extends React.Component {
   render() {
     return (
       <>
-        <ReactEcharts option={this.getOption()} />
+        <ReactEcharts option={this.getOption()} style={{ height: 550 }} />
       </>
     );
   }

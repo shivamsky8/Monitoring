@@ -1,6 +1,7 @@
 .home-wrapper {
   padding: 16px;
   overflow: hidden;
+  min-height: calc(100vh - 192px);
 }
 
 .main-section {
