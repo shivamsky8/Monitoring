@@ -11,15 +11,15 @@ export default class RadioButton extends React.Component {
     return (
       <>
         <div className="radio-wrapper">
-          <label class="container">
+          <label className="container">
             Yes
             <input type="radio" checked={checked} name="radio" />
-            <span class="checkmark"></span>
+            <span className="checkmark"></span>
           </label>
-          <label class="container">
+          <label className="container">
             No
             <input type="radio" name="radio" />
-            <span class="checkmark"></span>
+            <span className="checkmark"></span>
           </label>
         </div>
       </>

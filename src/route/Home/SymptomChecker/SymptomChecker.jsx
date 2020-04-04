@@ -73,6 +73,9 @@ export default class SymptomChecker extends React.Component {
   };
   onPrev = () => {
     this.Carousel.prev();
+    const index = this.Carousel.getCurrentIndex();
+    // this give current index of the slider card with this help we can enable next prev button and also put submit button on final card
+    console.log(index, "this.Carousel.getCurrentIndex()");
   };
 
   render() {

@@ -9,11 +9,11 @@ export default class Card extends React.Component {
     return (
       <>
         <section className="card-wrapper">
-          <div class="card">
-            <h3 class="card-list__text"> {question}</h3>
+          <div className="card">
+            <h3 className="card-list__text"> {question}</h3>
           </div>
           <div className="card-radio-wrapper">
-            <RadioButton checked="true" />
+            <RadioButton checked={true} />
           </div>
         </section>
       </>
