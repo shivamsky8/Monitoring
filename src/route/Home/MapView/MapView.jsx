@@ -7,6 +7,7 @@ import "./MapView.css";
 //TODO : popup style can also be changes we can also implement handlers for click if needed 
 
 export default class MapView extends React.Component {
+    
   render() {
     return (
       <>

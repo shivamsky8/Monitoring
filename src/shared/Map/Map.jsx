@@ -1,6 +1,6 @@
 import React, { Component} from 'react'
 import { createPortal } from "react-dom";
-import {Map,TileLayer,Marker,Popup} from 'react-leaflet';
+import {Map,TileLayer,Marker,Popup ,marker} from 'react-leaflet';
 import {mapData} from './MapData';
 
 
@@ -17,11 +17,11 @@ import {mapData} from './MapData';
             }
         }
 
-         createMarker = (mapData) => {
-            
+         createMarker = (mapData) => { 
             let markerData = [];
             mapData.forEach((element)=>{
-                let point = <Marker key={element.marker} position={element.position}> <Popup>
+                let point = <Marker position={element.position} title={element.marker}> 
+                <Popup>
                  {element.marker}</Popup></Marker>
                 markerData.push(point)
             })
@@ -34,8 +34,7 @@ import {mapData} from './MapData';
             const position = [this.state.lat,this.state.lng]
             
             return (
-                
-                <Map center={position} zoom={18} scrollWheelZoom={true}>
+             <Map center={position} zoom={18} scrollWheelZoom={true}>
                 <TileLayer
                  attribution={attribution}
                  url={url}
@@ -47,7 +46,7 @@ import {mapData} from './MapData';
         }
     }
 
-    const myMap = document.getElementById("map")
-    export function LocalMap(props) {
-        return  createPortal(<MointoringMap/>,myMap.appendChild(document.createElement('div')))
+    
+    export function LocalMap() {
+        return <MointoringMap/>
     }
