@@ -29,26 +29,25 @@ import {mapData} from './MapData';
         }
 
         render() {
-
             let url = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             let attribution = ""
             const position = [this.state.lat,this.state.lng]
             
             return (
-                <>
-                <Map center={position} zoom={18} scrollWheelZoom={false}>
+                
+                <Map center={position} zoom={18} scrollWheelZoom={true}>
                 <TileLayer
                  attribution={attribution}
                  url={url}
                  />      
                  {this.createMarker(this.state.mapData)}
             </Map>
-            </>
+            
         )
         }
     }
 
     const myMap = document.getElementById("map")
-    export function LocalMap() {
+    export function LocalMap(props) {
         return  createPortal(<MointoringMap/>,myMap.appendChild(document.createElement('div')))
     }
