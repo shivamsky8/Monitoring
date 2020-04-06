@@ -92,7 +92,8 @@ export const fetchCountryWise = countryName => async dispatch => {
 
 const initialState = {
   affectedCountries: [],
-  worldWide: {}
+  worldWide: {},
+ 
 };
 
 export function homeReducer(state = initialState, action) {
