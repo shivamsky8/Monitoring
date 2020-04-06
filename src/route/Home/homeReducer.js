@@ -21,6 +21,7 @@ export const FETCH_COUNTRY_WISE_STATS_SUCCESS =
   "[HOME] FETCH_COUNTRY_WISE_STATS_SUCCESS";
 export const FETCH_COUNTRY_WISE_STATS_ERROR =
   "[HOME] FETCH_COUNTRY_WISE_STATS_ERROR";
+export const SELECTED_MAP_COUNTRY = "[HOME] SELECTED_MAP_COUNTRY"
 
 // ------------------------------------
 // Actions
@@ -81,6 +82,11 @@ export const fetchCountryWiseError = (e) => ({
   payload: e,
 });
 
+export const setSelectedMapCountry = (country) => ({
+  type :  SELECTED_MAP_COUNTRY,
+  payload : country
+})
+
 export const fetchCountryWise = (countryName) => async (dispatch) => {
   try {
     const url = `/latest_stat_by_country.php?country=${countryName}`;
@@ -139,6 +145,8 @@ export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
   }
 };
 
+
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -147,6 +155,7 @@ const initialState = {
   affectedCountries: [],
   worldWide: {},
   filteredStats: {},
+  mapCountry : ""
 };
 
 export function homeReducer(state = initialState, action) {
@@ -175,7 +184,12 @@ export function homeReducer(state = initialState, action) {
         filteredStats: action.payload,
       };
     }
-
+    case SELECTED_MAP_COUNTRY: {
+      return {
+        ...state, 
+        mapCountry: action.payload
+      }
+    }
     default:
       return state;
   }
