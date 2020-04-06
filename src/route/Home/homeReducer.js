@@ -115,6 +115,7 @@ export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
         )
     );
 
+    console.table(data);
     const reqData = data.splice(data.length - 8, data.length);
     let date = [];
     let death = [];
@@ -123,12 +124,12 @@ export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
       date.push(elem.record_date.substr(0, elem.record_date.indexOf(" ")));
       death.push(
         parseInt(
-          elem.new_deaths.length > 0 ? elem.new_deaths.replace(",", "") : 0
+          elem.total_deaths.length > 0 ? elem.total_deaths.replace(",", "") : 0
         )
       );
       newCase.push(
         parseInt(
-          elem.new_cases.length > 0 ? elem.new_cases.replace(",", "") : 0
+          elem.total_cases.length > 0 ? elem.total_cases.replace(",", "") : 0
         )
       );
     });

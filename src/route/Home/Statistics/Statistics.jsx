@@ -70,7 +70,7 @@ class Statistics extends React.Component {
               <BarChart
                 date={filteredStats.date}
                 data={filteredStats.newCase}
-                name={"New Cases"}
+                name={"Cases"}
                 style={400}
               />
             </div>
@@ -78,7 +78,7 @@ class Statistics extends React.Component {
               <BarChart
                 date={filteredStats.date}
                 data={filteredStats.death}
-                name={"New Deaths"}
+                name={"Deaths"}
                 style={400}
               />
             </div>
