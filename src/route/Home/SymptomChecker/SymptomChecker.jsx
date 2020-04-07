@@ -5,8 +5,6 @@ import "./SymptomChecker.css";
 import ReactCardCarousel from "react-card-carousel";
 import Card from "../../../shared/Card/Card";
 import Result from "../../../shared/Result/Result";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 
 // import "swiper/css/swiper.css";
 export default class SymptomChecker extends React.Component {
@@ -92,27 +90,20 @@ export default class SymptomChecker extends React.Component {
     isCheck: false,
     result: false
   };
-  componentDidMount() {
-    //   this.setState({})
-    // console.log("myself component did mount");
-    // this.setState({ selectedId: this.Carousel.getCurrentIndex() });
-  }
 
-  onChange = e => {
-    console.log(e.target.checked);
-    console.log(typeof e.target.id);
-    const selectedId = parseInt(e.target.id);
-    this.setState(prevState => ({
-      question: prevState.question.map(qq =>
-        //   console.log("SymptomCheckar -> qq", qq)
-        {
-          let prev = qq.select;
-          return qq.id === selectedId ? { ...qq, select: !prev } : qq;
-        }
-      )
-    }));
-    console.log(this.state);
-  };
+  // onChange = e => {
+  //   const selectedId = parseInt(e.target.id);
+  //   this.setState(prevState => ({
+  //     question: prevState.question.map(qq =>
+  //       //   console.log("SymptomCheckar -> qq", qq)
+  //       {
+  //         let prev = qq.select;
+  //         return qq.id === selectedId ? { ...qq, select: !prev } : qq;
+  //       }
+  //     )
+  //   }));
+  //   console.log(this.state);
+  // };
 
   // onSubmit = () => {
   // let selected = this.state.question.filter(qq => qq.select).length;
@@ -137,26 +128,16 @@ export default class SymptomChecker extends React.Component {
       this.setState({ result: false });
     }
   };
-  // };
 
   onNext = () => {
     this.Carousel.next();
-
-    // this.setState({ selectedId: this.Carousel.getCurrentIndex() });
   };
+
   onPrev = () => {
     this.Carousel.prev();
-
-    // this.setState({ selectedId: this.Carousel.getCurrentIndex() });
-
-    // const index = this.Carousel.getCurrentIndex();
-    // this give current index of the slider card with this help we can enable next prev button and also put submit button on final card
-    // console.log(index, "this.Carousel.getCurrentIndex()");
   };
 
   onchange = e => {
-    // console.log("SymptomChecker -> onchange -> e", e)
-    console.log(this.Carousel.getCurrentIndex());
     this.setState({ selectedId: this.Carousel.getCurrentIndex() });
   };
 
@@ -169,24 +150,17 @@ export default class SymptomChecker extends React.Component {
   };
 
   onClickHandler = type => {
-    console.log("ale", this.state.selectedId, type);
     let id = this.state.selectedId + 1;
-    let ans = type === "No" ? false : true;
-    console.log(this.state);
+    let ans = type === "no" ? false : true;
     this.setState(prevState => ({
       checkerQuestions: prevState.checkerQuestions.map(qq => {
         return qq.id === id ? { ...qq, select: ans } : qq;
       })
     }));
   };
+
   render() {
     const { selectedId, checkerQuestions, isCheck, result } = this.state;
-    console.log("SymptomChecker -> render -> selectedId", selectedId);
-    // const { questions } = this.props;
-    console.log(
-      "SymptomChecker -> render -> questions",
-      checkerQuestions.length
-    );
 
     return (
       <div className="checker-container">
@@ -196,7 +170,6 @@ export default class SymptomChecker extends React.Component {
               afterChange={this.onchange}
               ref={Carousel => (this.Carousel = Carousel)}
             >
-              {/* {console.log(this.Carousel.getCurrentIndex())} */}
               {checkerQuestions.map(question => {
                 return (
                   <Card question={question} onClickAns={this.onClickHandler} />
@@ -221,7 +194,9 @@ export default class SymptomChecker extends React.Component {
                   ></i>
                 )}
                 {selectedId === checkerQuestions.length - 1 && (
-                  <button onClick={this.onSubmit}>Check <i className="fa fa-arrow-circle-o-right"></i></button>
+                  <button onClick={this.onSubmit}>
+                    Check <i className="fa fa-arrow-circle-o-right"></i>
+                  </button>
                 )}
               </div>
             </div>
@@ -232,11 +207,11 @@ export default class SymptomChecker extends React.Component {
             <div className="recheck">
               <button onClick={this.onRecheck}>Start Again </button>
               <p>
-              <b>Note:</b> This is not laboratory or biological test. This is
-              just self evaluation / screening test. Result is based on
-              questions and answer given by you. ( Not to be used for medical
-              purpose)
-            </p>
+                <b>Note:</b> This is not laboratory or biological test. This is
+                just self evaluation / screening test. Result is based on
+                questions and answer given by you. ( Not to be used for medical
+                purpose)
+              </p>
             </div>
           </div>
         )}
@@ -244,16 +219,3 @@ export default class SymptomChecker extends React.Component {
     );
   }
 }
-
-// const mapStateToProps = state => ({
-//   questions: state.ui.checkerQuestions
-// });
-
-// const mapDispatchToProps = {};
-
-// export default withRouter(
-//   connect(
-//     mapStateToProps,
-//     mapDispatchToProps
-//   )(SymptomChecker)
-// );

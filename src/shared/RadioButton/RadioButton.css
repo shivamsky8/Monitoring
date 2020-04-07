@@ -73,12 +73,12 @@
   align-items: center; */
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .container:hover {
   background-color: #ccc;
 }
- .selected {
+.selected {
   background-color: slategrey;
 }

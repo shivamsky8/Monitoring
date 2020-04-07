@@ -21,10 +21,11 @@
 .menu-item span {
   padding: 8px 8px 8px 16px;
   text-decoration: none;
-  font-size: 24px;
+  font-size: 22px;
   color: black;
   display: block;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .sidenav .closebtn {
