@@ -6,18 +6,21 @@ import {
   closeMenu,
   SelectedMenuItem,
   loading,
-  stopLoading
+  stopLoading,
 } from "../../Module/ui.reducer";
 import {
   fetchAffectedCountries,
   fetchWorldWide,
   fetchCountryWise,
-  fetchCountryWiseStats
+  fetchCountryWiseStats,
 } from "./homeReducer";
 // import Strip from "../../shared/Strip/Strip";
 import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
+
 import Statistics from "./Statistics/Statistics";
+import SymptomChecker from "./SymptomChecker/SymptomChecker";
+
 import httpClient from "../../utils/http-client";
 import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
@@ -27,28 +30,28 @@ import Footer from "../../shared/Footer/Footer";
 
 class Home extends React.Component {
   state = {
-    selectedCountry: "World Wide"
+    selectedCountry: "World Wide",
   };
 
   UNSAFE_componentWillMount() {
     const self = this;
     httpClient.interceptors.request.use(
-      function(config) {
+      function (config) {
         self.props.loading(true);
         return config;
       },
-      function(error) {
+      function (error) {
         console.log("Home -> componentWillMount -> error", error);
         return Promise.reject(error);
       }
     );
 
     httpClient.interceptors.response.use(
-      function(response) {
+      function (response) {
         self.props.stopLoading(false);
         return response;
       },
-      function(error) {
+      function (error) {
         return Promise.reject(error);
       }
     );
@@ -67,11 +70,11 @@ class Home extends React.Component {
     this.props.fetchWorldWide();
   };
 
-  getCountryWise = countryName => {
+  getCountryWise = (countryName) => {
     this.props.fetchCountryWise(countryName);
   };
 
-  handleChange = selectedOption => {
+  handleChange = (selectedOption) => {
     this.setState({ selectedCountry: selectedOption.value });
     if (selectedOption.value === "World Wide") {
       this.getWorldWide();
@@ -94,7 +97,7 @@ class Home extends React.Component {
     this.props.closeMenu();
   };
 
-  selectedItem = item => {
+  selectedItem = (item) => {
     this.closeNav();
     // this.setState({ selectedMenu: item.id });
     this.props.SelectedMenuItem(item.id);
@@ -137,7 +140,7 @@ class Home extends React.Component {
                 />
               )}
               {selectedMenu === 2 && <MapView />}
-              {selectedMenu === 3 && <span>Symptom Checker</span>}
+              {selectedMenu === 3 && <SymptomChecker />}
               {selectedMenu === 4 && <Faq />}
               {selectedMenu === 5 && <span>Helpline</span>}
               {selectedMenu === 6 && <span>About</span>}
@@ -149,13 +152,13 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isMenuOpen: state.ui.menu.isOpen,
   selectedMenu: state.ui.menu.selectedMenu,
   affectedCountries: state.home.affectedCountries,
   total: state.home.worldWide,
   loader: state.ui.loader,
-  filteredStats: state.home.filteredStats
+  filteredStats: state.home.filteredStats,
 });
 
 const mapDispatchToProps = {
@@ -167,7 +170,7 @@ const mapDispatchToProps = {
   fetchCountryWise,
   loading,
   stopLoading,
-  fetchCountryWiseStats
+  fetchCountryWiseStats,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
