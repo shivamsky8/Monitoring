@@ -23,9 +23,33 @@ export const FETCH_COUNTRY_WISE_STATS_ERROR =
   "[HOME] FETCH_COUNTRY_WISE_STATS_ERROR";
 export const SELECTED_MAP_COUNTRY = "[HOME] SELECTED_MAP_COUNTRY";
 
+export const FETCH_ALL_STATS = "[HOME] FETCH_ALL_STATS";
+export const FETCH_ALL_STATS_SUCCESS = "[HOME] FETCH_ALL_STATS_SUCCESS";
+export const FETCH_ALL_STATS_ERROR = "[HOME] FETCH_ALL_STATS_ERROR";
+
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+export const fetchAllStatsSuccess = (data) => ({
+  type: FETCH_ALL_STATS_SUCCESS,
+  payload: data,
+});
+
+export const fetchAllStatsError = (e) => ({
+  type: FETCH_ALL_STATS_ERROR,
+  payload: e,
+});
+
+export const fetchAllStats = () => async (dispatch) => {
+  try {
+    const url = "cases_by_country.php";
+    const response = await httpClient.get(url);
+    dispatch(fetchAllStatsSuccess(response.data.countries_stat));
+  } catch (e) {
+    dispatch(fetchAllStatsError(e));
+  }
+};
 
 export const fetchAffectedCountriesSuccess = (affected) => ({
   type: FETCH_AFFECTED_COUNTRIES_SUCCESS,
@@ -155,10 +179,17 @@ const initialState = {
   worldWide: {},
   filteredStats: {},
   mapCountry: "",
+  allStats: [],
 };
 
 export function homeReducer(state = initialState, action) {
   switch (action.type) {
+    case FETCH_ALL_STATS_SUCCESS: {
+      return {
+        ...state,
+        allStats: action.payload,
+      };
+    }
     case FETCH_AFFECTED_COUNTRIES_SUCCESS: {
       return {
         ...state,

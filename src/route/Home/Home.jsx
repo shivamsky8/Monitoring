@@ -13,20 +13,17 @@ import {
   fetchWorldWide,
   fetchCountryWise,
   fetchCountryWiseStats,
+  fetchAllStats,
 } from "./homeReducer";
-// import Strip from "../../shared/Strip/Strip";
 import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
-
 import Statistics from "./Statistics/Statistics";
 import SymptomChecker from "./SymptomChecker/SymptomChecker";
-
 import httpClient from "../../utils/http-client";
 import Loader from "../../shared/Loader/Loader";
 import MapView from "./MapView/MapView";
 import Faq from "./Faq/Faq";
 import "./Home.css";
-import Footer from "../../shared/Footer/Footer";
 
 class Home extends React.Component {
   state = {
@@ -63,7 +60,10 @@ class Home extends React.Component {
 
     //affected countries
     this.props.fetchAffectedCountries();
-    const name = "india";
+
+    //All Data
+
+    this.props.fetchAllStats();
   }
 
   getWorldWide = () => {
@@ -171,6 +171,7 @@ const mapDispatchToProps = {
   loading,
   stopLoading,
   fetchCountryWiseStats,
+  fetchAllStats,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
