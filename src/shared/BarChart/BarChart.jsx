@@ -13,7 +13,7 @@ export default class BarChart extends React.Component {
   }
 
   getOption = (date, data, name) => ({
-    color: name !== "New Deaths" ? ["#2F4554"] : ["#C23531"],
+    color: name !== "Deaths" ? ["#2F4554"] : ["#C23531"],
     tooltip: {
       trigger: "axis",
       axisPointer: {
