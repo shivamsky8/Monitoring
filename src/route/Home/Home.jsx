@@ -1,10 +1,10 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import {
   openMenu,
   closeMenu,
-  SelectedMenuItem,
   loading,
   stopLoading,
 } from "../../Module/ui.reducer";
@@ -15,9 +15,10 @@ import {
   fetchCountryWiseStats,
   fetchAllStats,
 } from "./homeReducer";
-import Header from "../../shared/Header/Header";
 import SideNav from "../../shared/Sidenav/Sidenav";
 import Statistics from "./Statistics/Statistics";
+import Helpline from "./Helpline/Helpline";
+import About from "./About/About";
 import SymptomChecker from "./SymptomChecker/SymptomChecker";
 import httpClient from "../../utils/http-client";
 import Loader from "../../shared/Loader/Loader";
@@ -38,7 +39,6 @@ class Home extends React.Component {
         return config;
       },
       function (error) {
-        console.log("Home -> componentWillMount -> error", error);
         return Promise.reject(error);
       }
     );
@@ -55,6 +55,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    const { history } = this.props;
     this.getWorldWide();
     this.props.fetchWorldWide();
 
@@ -64,6 +65,11 @@ class Home extends React.Component {
     //All Data
 
     this.props.fetchAllStats();
+
+    // small hack for routing
+    if (history.location.pathname === "/") {
+      history.push("home");
+    }
   }
 
   getWorldWide = () => {
@@ -99,20 +105,19 @@ class Home extends React.Component {
 
   selectedItem = (item) => {
     this.closeNav();
-    // this.setState({ selectedMenu: item.id });
-    this.props.SelectedMenuItem(item.id);
+    this.props.history.push(item.query);
   };
 
   render() {
     const { selectedCountry } = this.state;
-    const { isMenuOpen, selectedMenu, loader } = this.props;
+    const { isMenuOpen, loader, history } = this.props;
+
+    const { pathname } = history.location;
 
     return (
       <div
         className={`main-section ${isMenuOpen ? "main-section-with-nav" : ""}`}
       >
-        <Header navStatus={this.navStatus} />
-
         <SideNav
           isNavOpen={isMenuOpen}
           closeSideNav={this.closeNav}
@@ -124,26 +129,22 @@ class Home extends React.Component {
             <Loader />
           ) : (
             <div
-              className={`home-wrapper ${
-                isMenuOpen ? "home-wrapper-opacity" : ""
+              className={` ${isMenuOpen ? "home-wrapper-opacity" : ""} ${
+                pathname === "/map-view" ? "map-home-wrapper" : "home-wrapper"
               }`}
               onClick={this.closeNav}
             >
-              {/* <div>
-                <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
-              </div> */}
-
-              {selectedMenu === 1 && (
+              <Route path="/home">
                 <Statistics
                   selectedCountry={selectedCountry}
                   handleChange={this.handleChange}
                 />
-              )}
-              {selectedMenu === 2 && <MapView />}
-              {selectedMenu === 3 && <SymptomChecker />}
-              {selectedMenu === 4 && <Faq />}
-              {selectedMenu === 5 && <span>Helpline</span>}
-              {selectedMenu === 6 && <span>About</span>}
+              </Route>
+              <Route path="/map-view" component={MapView} />
+              <Route path="/faq" component={Faq} />
+              <Route path="/symptom-checker" component={SymptomChecker} />
+              <Route path="/helpline" component={Helpline} />
+              <Route path="/about" component={About} />
             </div>
           )}
         </div>
@@ -164,7 +165,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   openMenu,
   closeMenu,
-  SelectedMenuItem,
   fetchAffectedCountries,
   fetchWorldWide,
   fetchCountryWise,

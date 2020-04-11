@@ -1,5 +1,6 @@
 import React from "react";
 import ReactEcharts from "echarts-for-react";
+import Loader from "../Loader/Loader";
 // import "./PieChart.css";
 
 export default class BarChart extends React.Component {
@@ -37,7 +38,7 @@ export default class BarChart extends React.Component {
           show: false,
         },
         axisLabel: {
-          rotate: 30,
+          rotate: 45,
         },
       },
     ],
@@ -53,10 +54,14 @@ export default class BarChart extends React.Component {
       {
         name: name,
         type: "bar",
+        barWidth: "60%",
         data: date,
         label: {
           show: true,
           position: "top",
+          rotate: 90,
+          distance: 20,
+          verticalAlign: "middle",
         },
       },
     ],
@@ -66,10 +71,14 @@ export default class BarChart extends React.Component {
 
     return (
       <>
-        <ReactEcharts
-          option={this.getOption(data, date, name)}
-          style={{ height: style }}
-        />
+        {data ? (
+          <ReactEcharts
+            option={this.getOption(data, date, name)}
+            style={{ height: style }}
+          />
+        ) : (
+          <Loader />
+        )}
       </>
     );
   }

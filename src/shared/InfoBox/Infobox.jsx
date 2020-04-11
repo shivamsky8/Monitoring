@@ -3,8 +3,14 @@ import React from "react";
 import Strip from "../Strip/Strip";
 import "./Infobox.css";
 
+const border = {
+  "Total Cases": "cases-border",
+  Death: "death-border",
+  Recovered: "recover-border",
+};
+
 const InfoBox = ({ header, count, newCase }) => (
-  <div className="infobox-wrapper">
+  <div className={`infobox-wrapper ${border[header]}`}>
     <Strip stripText={header} />
     <div className="infobox-count">
       <span className="infobox-count-span">{count ? count : 0}</span>

@@ -145,8 +145,7 @@ export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
         )
     );
 
-    console.table(data);
-    const reqData = data.splice(data.length - 8, data.length);
+    const reqData = data.splice(data.length - 10, data.length);
     let date = [];
     let death = [];
     let newCase = [];

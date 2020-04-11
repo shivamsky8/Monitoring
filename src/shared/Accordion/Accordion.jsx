@@ -7,7 +7,7 @@ export const Toggle = (props) => {
       <div className="toggable_heading" onClick={props.setActive}>
         <span>{props.title}</span>
         <i
-          class={`fa ${
+          className={`fa ${
             props.active ? "fa-chevron-down" : "fa fa-chevron-right"
           }`}
         ></i>

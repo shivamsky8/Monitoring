@@ -6,7 +6,6 @@ export const END_HTTP_REQUEST = "[UI] END_HTTP_REQUEST";
 
 export const OPEN_MENU = "[UI] OPEN_MENU";
 export const CLOSE_MENU = "[UI] CLOSE_MENU";
-export const SELECTED_MENU_ITEM = "[UI] SELECTED_MENU_ITEM";
 
 export const SHOW_LOADER = "[UI] SHOW_LOADER";
 export const HIDE_LOADER = "[UI] HIDE_LOADER";
@@ -15,34 +14,28 @@ export const HIDE_LOADER = "[UI] HIDE_LOADER";
 // Actions
 // ------------------------------------
 
-export const startHTTPRequest = url => ({
+export const startHTTPRequest = (url) => ({
   type: START_HTTP_REQUEST,
-  payload: url
+  payload: url,
 });
 
-export const endHTTPRequest = url => ({
+export const endHTTPRequest = (url) => ({
   type: END_HTTP_REQUEST,
-  payload: url
+  payload: url,
 });
 
 export const openMenu = () => ({
-  type: OPEN_MENU
+  type: OPEN_MENU,
 });
 
 export const closeMenu = () => ({
-  type: CLOSE_MENU
+  type: CLOSE_MENU,
 });
 
-export const SelectedMenuItem = e => ({
-  type: SELECTED_MENU_ITEM,
-  payload: e
-});
-
-export const loading = bool =>
-({
+export const loading = (bool) => ({
   type: SHOW_LOADER,
-  data: bool
-})
+  data: bool,
+});
 //  {
 // console.log("bool", bool)
 //   return bool
@@ -56,10 +49,10 @@ export const loading = bool =>
 //       };
 // };
 
-export const stopLoading = bool => ({
+export const stopLoading = (bool) => ({
   type: HIDE_LOADER,
-  data: bool
-})
+  data: bool,
+});
 
 // ------------------------------------
 // Reducer
@@ -68,9 +61,8 @@ export const stopLoading = bool => ({
 const initialState = {
   menu: {
     isOpen: false,
-    selectedMenu: 1
   },
-  loader: false
+  loader: false,
 };
 
 export function uiReducer(state = initialState, action) {
@@ -80,8 +72,8 @@ export function uiReducer(state = initialState, action) {
         ...state,
         menu: {
           ...state.menu,
-          isOpen: true
-        }
+          isOpen: true,
+        },
       };
     }
 
@@ -90,32 +82,22 @@ export function uiReducer(state = initialState, action) {
         ...state,
         menu: {
           ...state.menu,
-          isOpen: false
-        }
-      };
-    }
-
-    case SELECTED_MENU_ITEM: {
-      return {
-        ...state,
-        menu: {
-          ...state.menu,
-          selectedMenu: action.payload
-        }
+          isOpen: false,
+        },
       };
     }
 
     case SHOW_LOADER: {
       return {
         ...state,
-        loader: action.data
+        loader: action.data,
       };
     }
 
     case HIDE_LOADER: {
       return {
         ...state,
-        loader: action.data
+        loader: action.data,
       };
     }
 

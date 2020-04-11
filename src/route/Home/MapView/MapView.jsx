@@ -16,7 +16,7 @@ class MapView extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.country != this.props.country) {
+    if (prevProps.country !== this.props.country) {
       let country = this.props.country;
       this.props.fetchCountryWise(country);
       this.props.fetchCountryWiseStats(country);

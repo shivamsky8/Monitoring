@@ -13,82 +13,82 @@ export default class SymptomChecker extends React.Component {
       {
         id: 1,
         que: "Do yoh have symptoms of ferver ?",
-        select: false
+        select: false,
       },
       {
         id: 2,
         que: "Do yoh have any cough in past 15 days ?",
-        select: false
+        select: false,
       },
       {
         id: 3,
         que: "Do you sneeze often  ?",
-        select: false
+        select: false,
       },
       {
         id: 4,
         que: "Do you have symptoms of sore throat ?",
-        select: false
+        select: false,
       },
       {
         id: 5,
         que: "Do you have any pain  in a muscle or group of muscles?",
-        select: false
+        select: false,
       },
       {
         id: 6,
         que: "Do you have symptoms of Fatigue ?",
-        select: false
+        select: false,
       },
       {
         id: 7,
         que: "Do you have any  difficulty while breathing ?",
-        select: false
+        select: false,
       },
       {
         id: 8,
         sysptoms: [],
         que: "Have you travelled outside your country in past 30 days?",
-        select: false
+        select: false,
       },
       {
         id: 9,
         sysptoms: [],
         que:
           "Have anyone from your family / close contact travelled outside your country in past 30 days?",
-        select: false
+        select: false,
       },
       {
         id: 10,
         sysptoms: [],
         que:
           "Have you travelled inside your country to other cities in past 15 days?",
-        select: false
+        select: false,
       },
       {
         id: 11,
         sysptoms: [],
         que:
           "Have anyone from your family / close contact travelled inside your country to other cities in past 15 days?",
-        select: false
+        select: false,
       },
       {
         id: 12,
         sysptoms: [],
         que:
           "Exposure to a confirmed covid-19 case or suspicious patient in the last two weeks?",
-        select: false
+        select: false,
       },
       {
         id: 13,
         sysptoms: [],
         que: "Have you visited a health care facility in the past two weeks?",
-        select: false
-      }
+        select: false,
+      },
     ],
     selectedId: 0,
     isCheck: false,
-    result: false
+    result: false,
   };
 
   // onChange = e => {
@@ -118,7 +118,7 @@ export default class SymptomChecker extends React.Component {
   // }
   onSubmit = () => {
     this.setState({ isCheck: true });
-    let selected = this.state.checkerQuestions.filter(qq => qq.select).length;
+    let selected = this.state.checkerQuestions.filter((qq) => qq.select).length;
     let result = this.state.checkerQuestions.length - selected;
     if (result <= selected) {
       console.log("possible");
@@ -137,7 +137,7 @@ export default class SymptomChecker extends React.Component {
     this.Carousel.prev();
   };
 
-  onchange = e => {
+  onchange = (e) => {
     this.setState({ selectedId: this.Carousel.getCurrentIndex() });
   };
 
@@ -145,17 +145,17 @@ export default class SymptomChecker extends React.Component {
     this.setState({
       selectedId: 1,
       result: false,
-      isCheck: false
+      isCheck: false,
     });
   };
 
-  onClickHandler = type => {
+  onClickHandler = (type) => {
     let id = this.state.selectedId + 1;
     let ans = type === "no" ? false : true;
-    this.setState(prevState => ({
-      checkerQuestions: prevState.checkerQuestions.map(qq => {
+    this.setState((prevState) => ({
+      checkerQuestions: prevState.checkerQuestions.map((qq) => {
         return qq.id === id ? { ...qq, select: ans } : qq;
-      })
+      }),
     }));
   };
 
@@ -168,9 +168,9 @@ export default class SymptomChecker extends React.Component {
           <div>
             <ReactCardCarousel
               afterChange={this.onchange}
-              ref={Carousel => (this.Carousel = Carousel)}
+              ref={(Carousel) => (this.Carousel = Carousel)}
             >
-              {checkerQuestions.map(question => {
+              {checkerQuestions.map((question) => {
                 return (
                   <Card question={question} onClickAns={this.onClickHandler} />
                 );

@@ -4,17 +4,22 @@ import HeaderWithCloseButton from "../HeaderWithCloseButton/HeaderWithCloseButto
 import "./Sidenav.css";
 
 const menuItem = [
-  { id: 1, name: "Statistics", isSelected: true },
-  { id: 2, name: "Map View", isSelected: false },
-  { id: 3, name: "Symptom Checker", isSelected: false },
-  { id: 4, name: "FAQ", isSelected: false },
-  { id: 5, name: "Helpline", isSelected: false },
-  { id: 6, name: "About", isSelected: false }
+  { id: 1, name: "Statistics", isSelected: true, query: "home" },
+  { id: 2, name: "Map View", isSelected: false, query: "map-view" },
+  {
+    id: 3,
+    name: "Symptom Checker",
+    isSelected: false,
+    query: "symptom-checker",
+  },
+  { id: 4, name: "FAQ", isSelected: false, query: "faq" },
+  { id: 5, name: "Helpline", isSelected: false, query: "helpline" },
+  { id: 6, name: "About", isSelected: false, query: "about" },
 ];
 
 export default class SideNav extends React.Component {
   state = {
-    menuItem: []
+    menuItem: [],
   };
 
   componentDidMount() {
@@ -25,10 +30,12 @@ export default class SideNav extends React.Component {
     this.props.closeSideNav();
   };
 
-  selectedItem = item => {
+  selectedItem = (item) => {
+    // console.log(item);
+
     const { menuItem } = this.state;
     const cloneMenuItem = [...menuItem];
-    cloneMenuItem.forEach(aItem => {
+    cloneMenuItem.forEach((aItem) => {
       if (aItem.id === item.id) {
         aItem.isSelected = true;
       } else {
@@ -48,7 +55,7 @@ export default class SideNav extends React.Component {
         <div className={`sidenav ${isNavOpen ? "sidenav-open" : ""}`}>
           <HeaderWithCloseButton closeSideNav={this.closeSideNav} />
           <div className="menu-item">
-            {menuItem.map(item => (
+            {menuItem.map((item) => (
               <span
                 key={item.id}
                 className={item.isSelected ? "selected-menu" : ""}

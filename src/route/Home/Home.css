@@ -3,6 +3,11 @@
   overflow: hidden;
   min-height: calc(100vh - 192px);
 }
+.map-home-wrapper {
+  padding: 0px;
+  overflow: hidden;
+  min-height: calc(100vh - 192px);
+}
 
 .main-section {
   width: 100%;
