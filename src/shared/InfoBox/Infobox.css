@@ -38,3 +38,13 @@
     width: 100%;
   }
 }
+
+.cases-border {
+  border-bottom: 8px solid #c23531;
+}
+.death-border {
+  border-bottom: 8px solid #2f4554;
+}
+.recover-border {
+  border-bottom: 8px solid #61a0a8;
+}

@@ -1,0 +1,16 @@
+.middle {
+  position: fixed;
+  top: 50%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.topleft {
+    position: absolute;
+    top: 0;
+    left: 16px;
+}
+hr {
+  margin: auto;
+  width: 40%;
+}

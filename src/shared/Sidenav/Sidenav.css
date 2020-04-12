@@ -1,0 +1,63 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #f4f4f4;
+  overflow-x: hidden;
+  transition: 0.5s;
+  /* padding-top: 60px; */
+}
+.sidenav-open {
+  width: 22%;
+}
+
+.menu-item {
+  padding-top: 4%;
+}
+
+.menu-item span {
+  padding: 8px 8px 8px 16px;
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.selected-menu {
+  color: rgb(0, 141, 204) !important;
+  font-weight: bold;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+  .sidenav-open {
+    width: 60%;
+  }
+  .sidenav .closebtn {
+    font-size: 24px;
+    margin-left: 40px;
+  }
+  .menu-item span {
+    /* padding: 8px 8px 8px 16px; */
+    /* text-decoration: none; */
+    font-size: 18px;
+  }
+}
+/* 
+@media only screen and (min-width: 768px) {
+  .sidenav-open {
+    width: 40%;
+  }
+} */

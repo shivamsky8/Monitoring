@@ -1,0 +1,78 @@
+.checker-container {
+  /* display: flex; */
+  /* justify-content: space-evenly; */
+  align-items: center;
+  /* flex-direction: column; */
+  /* flex-flow: column-reverse; */
+}
+.quest-card {
+}
+
+.action-container {
+  /* border: 1px solid red; */
+  border-top: 1px solid rgb(0, 141, 204);
+  padding: 2px;
+  /* position: absolute; */
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-action {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  top: 300px;
+}
+
+.arrow {
+  font-size: 24px;
+  color: rgb(0, 141, 204);
+}
+
+.recheck {
+  padding: 10px 0px 0px;
+  text-align: center;
+}
+
+.recheck button {
+  padding: 3px 13px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgb(0, 141, 204);
+  color: white;
+  border: none;
+  border-radius: 12px;
+}
+p {
+  font-size: 9px;
+  padding: 2px 2px;
+  color: rgb(108, 117, 125);
+  text-align: center;
+}
+button {
+  /* padding: 3px 13px; */
+  font-size: 24px;
+  cursor: pointer;
+  background-color: rgb(0, 141, 204);
+  color: white;
+  border: none;
+  border-radius: 12px;
+}
+.check-button {
+  position: absolute;
+  bottom: 25%;
+  left: 47%;
+}
+i {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 480px) {
+  .carousel-action {
+    top: 310px;
+  }
+  .check-button {
+    bottom: 25%;
+    left: 37%;
+  }
+}

@@ -1,158 +1,181 @@
 import React from "react";
-import axios from "axios";
-import Strip from "../../shared/Strip/Strip";
-import InfoBox from "../../shared/InfoBox/Infobox";
-import Select from "react-select";
-import PieChart from "../../shared/PieChart/PieChart";
+import { Route } from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+
+import {
+  openMenu,
+  closeMenu,
+  loading,
+  stopLoading,
+} from "../../Module/ui.reducer";
+import {
+  fetchAffectedCountries,
+  fetchWorldWide,
+  fetchCountryWise,
+  fetchCountryWiseStats,
+  fetchAllStats,
+} from "./homeReducer";
+import SideNav from "../../shared/Sidenav/Sidenav";
+import Statistics from "./Statistics/Statistics";
+import Helpline from "./Helpline/Helpline";
+import About from "./About/About";
+import SymptomChecker from "./SymptomChecker/SymptomChecker";
+import httpClient from "../../utils/http-client";
+import Loader from "../../shared/Loader/Loader";
+import MapView from "./MapView/MapView";
+import Faq from "./Faq/Faq";
 import "./Home.css";
 
-export default class PersonList extends React.Component {
+class Home extends React.Component {
   state = {
-    total: [],
-    affectedCountries: [],
     selectedCountry: "World Wide",
-    isLoading: false
   };
 
-  componentDidMount() {
-    this.getWorldWide();
+  UNSAFE_componentWillMount() {
+    const self = this;
+    httpClient.interceptors.request.use(
+      function (config) {
+        self.props.loading(true);
+        return config;
+      },
+      function (error) {
+        return Promise.reject(error);
+      }
+    );
 
-    //affected countries
-    this.getAffectedCountry();
+    httpClient.interceptors.response.use(
+      function (response) {
+        self.props.stopLoading(false);
+        return response;
+      },
+      function (error) {
+        return Promise.reject(error);
+      }
+    );
   }
 
-  getAffectedCountry = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/affected.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
-        const affectedCountries = [];
-        response.data.affected_countries.forEach(element => {
-          affectedCountries.push({ value: element, label: element });
-        });
-        affectedCountries.push({ value: "World Wide", label: "World Wide" });
-        this.setState({ affectedCountries });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  componentDidMount() {
+    const { history } = this.props;
+    this.getWorldWide();
+    this.props.fetchWorldWide();
+
+    //affected countries
+    this.props.fetchAffectedCountries();
+
+    //All Data
+
+    this.props.fetchAllStats();
+
+    // small hack for routing
+    if (history.location.pathname === "/") {
+      history.push("home");
+    }
+  }
 
   getWorldWide = () => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      }
-    })
-      .then(response => {
-        this.setState({ total: response.data, isLoading: false });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.fetchWorldWide();
   };
 
-  getCountryWise = countryName => {
-    axios({
-      method: "GET",
-      url:
-        "https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php",
-      headers: {
-        "content-type": "application/octet-stream",
-        "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-        "x-rapidapi-key": "4119bc4c72msh36fce24686527fbp136ec4jsnaa9b50e47841"
-      },
-      params: {
-        country: countryName
-      }
-    })
-      .then(response => {
-        console.log(response);
-        this.setState({
-          total: response.data.latest_stat_by_country[0],
-          isLoading: false
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  getCountryWise = (countryName) => {
+    this.props.fetchCountryWise(countryName);
   };
 
-  handleChange = selectedOption => {
-    this.setState({ isLoading: true, selectedCountry: selectedOption.value });
+  handleChange = (selectedOption) => {
+    this.setState({ selectedCountry: selectedOption.value });
     if (selectedOption.value === "World Wide") {
       this.getWorldWide();
     } else {
       this.getCountryWise(selectedOption.value);
+      this.props.fetchCountryWiseStats(selectedOption.value);
     }
   };
 
+  navStatus = () => {
+    const { isMenuOpen } = this.props;
+    if (isMenuOpen) {
+      this.props.closeMenu();
+    } else {
+      this.props.openMenu();
+    }
+  };
+
+  closeNav = () => {
+    this.props.closeMenu();
+  };
+
+  selectedItem = (item) => {
+    this.closeNav();
+    this.props.history.push(item.query);
+  };
+
   render() {
-    const { total, affectedCountries, selectedCountry, isLoading } = this.state;
-    const all = total.total_cases
-      ? parseInt(total.total_cases.replace(",", ""))
-      : 0;
-    const death = total.total_deaths
-      ? parseInt(total.total_deaths.replace(",", ""))
-      : 0;
-    const recover = total.total_recovered
-      ? parseInt(total.total_recovered.replace(",", ""))
-      : 0;
-    const active = all - recover - death;
-    const newCase = total.new_cases
-      ? parseInt(total.new_cases.replace(",", ""))
-      : 0;
-    const newDeath = total.new_deaths
-      ? parseInt(total.new_deaths.replace(",", ""))
-      : 0;
+    const { selectedCountry } = this.state;
+    const { isMenuOpen, loader, history } = this.props;
+
+    const { pathname } = history.location;
+
     return (
-      <div className="home-wrapper">
+      <div
+        className={`main-section ${isMenuOpen ? "main-section-with-nav" : ""}`}
+      >
+        <SideNav
+          isNavOpen={isMenuOpen}
+          closeSideNav={this.closeNav}
+          selectedItem={this.selectedItem}
+        />
+
         <div>
-          <Strip stripText="COVID-19 CORONAVIRUS PANDEMIC" />
-        </div>
-        <div className="name-section">
-          <span>{selectedCountry}</span>
-          <div className="home-select">
-            <Select
-              onChange={this.handleChange}
-              options={affectedCountries}
-              placeholder={selectedCountry}
-            />
+          <div
+            className={` ${isMenuOpen ? "home-wrapper-opacity" : ""} ${
+              pathname === "/map-view" ? "map-home-wrapper" : "home-wrapper"
+            }`}
+            onClick={this.closeNav}
+          >
+            {loader ? (
+              <Loader />
+            ) : (
+              <>
+                <Route path="/home">
+                  <Statistics
+                    selectedCountry={selectedCountry}
+                    handleChange={this.handleChange}
+                  />
+                </Route>
+                <Route path="/map-view" component={MapView} />
+                <Route path="/faq" component={Faq} />
+                <Route path="/symptom-checker" component={SymptomChecker} />
+                <Route path="/helpline" component={Helpline} />
+                <Route path="/about" component={About} />
+                {/* <Redirect from="**" to="home" /> */}
+              </>
+            )}
           </div>
         </div>
-        {isLoading ? (
-          <div id="loader"></div>
-        ) : (
-          <>
-            <div className="cases-section">
-              <InfoBox
-                header="Total Cases"
-                count={total.total_cases}
-                newCase={newCase}
-              />
-              <InfoBox
-                header="Death"
-                count={total.total_deaths}
-                newCase={newDeath}
-              />
-              <InfoBox header="Recovered" count={total.total_recovered} />
-            </div>
-            <PieChart active={active} death={death} recover={recover} />
-          </>
-        )}
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  isMenuOpen: state.ui.menu.isOpen,
+  selectedMenu: state.ui.menu.selectedMenu,
+  affectedCountries: state.home.affectedCountries,
+  total: state.home.worldWide,
+  loader: state.ui.loader,
+  filteredStats: state.home.filteredStats,
+});
+
+const mapDispatchToProps = {
+  openMenu,
+  closeMenu,
+  fetchAffectedCountries,
+  fetchWorldWide,
+  fetchCountryWise,
+  loading,
+  stopLoading,
+  fetchCountryWiseStats,
+  fetchAllStats,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

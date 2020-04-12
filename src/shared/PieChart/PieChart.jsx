@@ -4,7 +4,7 @@ import "./PieChart.css";
 
 export default class PieChart extends React.Component {
   state = {
-    radius: "70%"
+    radius: "70%",
   };
   componentDidMount() {
     if (window.innerWidth < 480) {
@@ -15,12 +15,12 @@ export default class PieChart extends React.Component {
   getOption = () => ({
     tooltip: {
       trigger: "item",
-      formatter: "{a} <br/>{b} : {c} ({d}%)"
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
     },
     legend: {
       orient: "horizontal",
       left: "left",
-      data: ["Active Case", "Total Death", "Total Recovered"]
+      data: ["Active Case", "Total Death", "Total Recovered"],
     },
     series: [
       {
@@ -29,38 +29,38 @@ export default class PieChart extends React.Component {
         radius: this.state.radius,
         center: ["50%", "50%"],
         label: {
-          fontSize: 12
+          fontSize: 12,
         },
         data: [
           {
             value: this.props.active ? this.props.active : 0,
-            name: "Active Case"
+            name: "Active Case",
           },
           {
             value: this.props.death ? this.props.death : 0,
-            name: "Total Death"
+            name: "Total Death",
           },
           {
             value: this.props.recover ? this.props.recover : 0,
-            name: "Total Recovered"
-          }
+            name: "Total Recovered",
+          },
         ],
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)"
-          }
-        }
-      }
-    ]
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
   });
   render() {
     return (
       <>
         <ReactEcharts
           option={this.getOption()}
-          // style={{ height: 500 }}
+          // style={{ height: 300 }}
           className="echart-style"
         />
       </>
