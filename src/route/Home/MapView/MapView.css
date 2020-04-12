@@ -2,3 +2,6 @@
   width: 100%;
   height: 100%;
 }
+.leaflet-container {
+  height: calc(100vh - 160px);
+}

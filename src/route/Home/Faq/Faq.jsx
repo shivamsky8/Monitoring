@@ -15,6 +15,7 @@ export default class Faq extends React.Component {
             <Accordion>
               {faqData.map((aData) => (
                 <Toggle
+                  key={aData.id}
                   title={aData.question}
                   answer={aData.answer}
                   subQuestion={aData.sub_question}

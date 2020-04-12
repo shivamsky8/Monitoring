@@ -51,12 +51,17 @@ p {
 }
 button {
   /* padding: 3px 13px; */
-  font-size: 14px;
+  font-size: 24px;
   cursor: pointer;
   background-color: rgb(0, 141, 204);
   color: white;
   border: none;
   border-radius: 12px;
+}
+.check-button {
+  position: absolute;
+  bottom: 25%;
+  left: 47%;
 }
 i {
   cursor: pointer;
@@ -65,5 +70,9 @@ i {
 @media only screen and (min-width: 0px) and (max-width: 480px) {
   .carousel-action {
     top: 310px;
+  }
+  .check-button {
+    bottom: 25%;
+    left: 37%;
   }
 }

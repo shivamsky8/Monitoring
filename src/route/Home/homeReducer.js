@@ -21,7 +21,6 @@ export const FETCH_COUNTRY_WISE_STATS_SUCCESS =
   "[HOME] FETCH_COUNTRY_WISE_STATS_SUCCESS";
 export const FETCH_COUNTRY_WISE_STATS_ERROR =
   "[HOME] FETCH_COUNTRY_WISE_STATS_ERROR";
-export const SELECTED_MAP_COUNTRY = "[HOME] SELECTED_MAP_COUNTRY";
 
 export const FETCH_ALL_STATS = "[HOME] FETCH_ALL_STATS";
 export const FETCH_ALL_STATS_SUCCESS = "[HOME] FETCH_ALL_STATS_SUCCESS";
@@ -106,11 +105,6 @@ export const fetchCountryWiseError = (e) => ({
   payload: e,
 });
 
-export const setSelectedMapCountry = (country) => ({
-  type: SELECTED_MAP_COUNTRY,
-  payload: country,
-});
-
 export const fetchCountryWise = (countryName) => async (dispatch) => {
   try {
     const url = `/latest_stat_by_country.php?country=${countryName}`;
@@ -153,12 +147,12 @@ export const fetchCountryWiseStats = (countryName) => async (dispatch) => {
       date.push(elem.record_date.substr(0, elem.record_date.indexOf(" ")));
       death.push(
         parseInt(
-          elem.total_deaths.length > 0 ? elem.total_deaths.replace(",", "") : 0
+          elem.new_deaths.length > 0 ? elem.new_deaths.replace(",", "") : 0
         )
       );
       newCase.push(
         parseInt(
-          elem.total_cases.length > 0 ? elem.total_cases.replace(",", "") : 0
+          elem.new_cases.length > 0 ? elem.new_cases.replace(",", "") : 0
         )
       );
     });
@@ -177,7 +171,6 @@ const initialState = {
   affectedCountries: [],
   worldWide: {},
   filteredStats: {},
-  mapCountry: "",
   allStats: [],
 };
 
@@ -211,12 +204,6 @@ export function homeReducer(state = initialState, action) {
       return {
         ...state,
         filteredStats: action.payload,
-      };
-    }
-    case SELECTED_MAP_COUNTRY: {
-      return {
-        ...state,
-        mapCountry: action.payload,
       };
     }
     default:

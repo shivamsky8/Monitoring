@@ -1,0 +1,22 @@
+.popup-country {
+  font-size: 20px;
+  font-weight: 700;
+}
+.leaflet-popup-content {
+  width: auto !important;
+}
+.recovered-popup {
+  color: #61a0a8;
+  padding-left: 5px;
+}
+.death-popup {
+  color: #2f4554;
+  padding-left: 5px;
+}
+.cases-popup {
+  color: #c23531;
+  padding-left: 5px;
+}
+.popup-flex {
+  display: flex;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+
 import {
   openMenu,
   closeMenu,
@@ -125,28 +126,31 @@ class Home extends React.Component {
         />
 
         <div>
-          {loader ? (
-            <Loader />
-          ) : (
-            <div
-              className={` ${isMenuOpen ? "home-wrapper-opacity" : ""} ${
-                pathname === "/map-view" ? "map-home-wrapper" : "home-wrapper"
-              }`}
-              onClick={this.closeNav}
-            >
-              <Route path="/home">
-                <Statistics
-                  selectedCountry={selectedCountry}
-                  handleChange={this.handleChange}
-                />
-              </Route>
-              <Route path="/map-view" component={MapView} />
-              <Route path="/faq" component={Faq} />
-              <Route path="/symptom-checker" component={SymptomChecker} />
-              <Route path="/helpline" component={Helpline} />
-              <Route path="/about" component={About} />
-            </div>
-          )}
+          <div
+            className={` ${isMenuOpen ? "home-wrapper-opacity" : ""} ${
+              pathname === "/map-view" ? "map-home-wrapper" : "home-wrapper"
+            }`}
+            onClick={this.closeNav}
+          >
+            {loader ? (
+              <Loader />
+            ) : (
+              <>
+                <Route path="/home">
+                  <Statistics
+                    selectedCountry={selectedCountry}
+                    handleChange={this.handleChange}
+                  />
+                </Route>
+                <Route path="/map-view" component={MapView} />
+                <Route path="/faq" component={Faq} />
+                <Route path="/symptom-checker" component={SymptomChecker} />
+                <Route path="/helpline" component={Helpline} />
+                <Route path="/about" component={About} />
+                {/* <Redirect from="**" to="home" /> */}
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
